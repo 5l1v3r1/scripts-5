@@ -1,0 +1,19 @@
+#!/bin/bash
+
+headset='10:4F:A8:75:A5:5E'
+
+index=`pacmd list-cards | grep bluez_card -B1 | grep index | awk '{print $2}'`;
+pacmd set-card-profile $index headset_head_unit;
+sleep 2
+
+pacmd set-card-profile $index off;
+sleep 2
+
+echo -e 'disconnect '$headset'\nquit' | bluetoothctl
+sleep 5
+
+echo -e 'connect '$headset'\nquit' | bluetoothctl
+sleep 5
+
+index=`pacmd list-cards | grep bluez_card -B1 | grep index | awk '{print $2}'`;
+pacmd set-card-profile $index a2dp_sink;
