@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import argcomplete
+import argparse
+import os
+import subprocess
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='apply native2ascii on all files in current folder')
+    parser.add_argument('-d', action="store", dest="dest", help="Destination folder", default="/tmp/native2ascii")
+    argcomplete.autocomplete(parser)
+    args = parser.parse_args()
+    
+    if not os.path.exists(args.dest):
+        os.makedirs(args.dest)
+
+    for filename in os.listdir('.'):
+        if os.path.splitext(filename)[1] == '.properties':
+            subprocess.Popen('native2ascii -encoding utf8 %s %s' % (filename, os.path.join(args.dest, filename)), shell=True)
